@@ -1,0 +1,9 @@
+## Data Cleaning Documentation
+| Changes | Column Name | Description of Issue | Action Taken (Data Cleaning) | Impact & Business Logic | Status |
+| :---: | :--- | :--- | :--- | :--- | :---: |
+| **1** | `OrderID` | Potential duplicate records or spaces in IDs. | Verified that all transaction IDs are unique (0% error rate) and applied TRIM to remove whitespace. | Ensured transaction counts are accurate and established a single source of truth. | **Resolved** |
+| **2** | `Date` | Inconsistent or unstandardized date values. | Standardized all formats to the ISO standard (YYYY-MM-DD). | Guaranteed historical timeline consistency for future time-series analysis. | **Resolved** |
+| **3** | `CouponCode` | Missing or blank cells ($Null$ values). | Imputed missing text fields by replacing blanks with 'No Coupon'. | Prevented arbitrary row deletion while preserving the full statistical dataset. | **Resolved** |
+| **4** | `UnitPrice` / `TotalPrice` | Text spaces or decimal format discrepancies. | Fixed formatting to display numbers cleanly with 2 decimal decimals. | Ensured mathematical correctness across currency rows. | **Resolved** |
+| **5** | *Business Logic* | Gross vs Net revenue conflict. | Observed that `TotalPrice` equals Quantity $\times$ `UnitPrice` without deducting coupon codes (SAVE10, etc.). | Documented that current revenue figures represent gross revenue before discounts. | **Audited** |
+| **6** | `Net_TotalPrice` *(New)* | Need to differentiate between customers who paid full price and those who used discount coupons. | Created a new calculated column applying conditional math based on `CouponCode` (e.g., deducting 10% for SAVE10, 15% for WINTER15, and keeping 100% for FREESHIP and No Coupon). | Allowed clear differentiation between full-price sales and discounted orders, providing an accurate metric for actual net revenue. | **Resolved**
